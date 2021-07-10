@@ -17,8 +17,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addBook(title: String!): bookSchema
-    removeBook(bookId: ID!): bookSchema
+    addBook(title: String!): Book
+    removeBook(bookId: ID!): Book
   }
 `;
 
