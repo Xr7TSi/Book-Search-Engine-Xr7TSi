@@ -5,6 +5,9 @@ const resolvers = {
     book: async () => {
       return Book.find({});
     },
+    user: async () => {
+      return User.find({});
+    }
 
   },
 
