@@ -19,6 +19,10 @@ const resolvers = {
     removeBook: async (parent, { ID }) => {
       return Book.findOneAndDelete({ _id: ID });
     },
+
+    addUser: async (parent, { username, email, password, savedBooks }) => {
+      return User.create({ username, email, password, savedBooks });
+    },
    
   },
 };
