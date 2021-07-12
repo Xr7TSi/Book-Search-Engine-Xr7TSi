@@ -2,30 +2,25 @@ const { Book, User } = require('../models');
 
 const resolvers = {
   Query: {
-    book: async () => {
-      return await Book.find({});
+    getSingleUser: async (args) => {  
+      return await User.findOne({args});
     },
-    user: async () => {
+    getAllUsers: async () => {
       return await User.find({});
-    },
-    userById: async (parent, args) => {
-      return await User.findById(args.id);
     }
   },
 
   Mutation: {
-    addBook: async (parent, { title }) => {
-      return await Book.create({ title });
-    },
-   
-    removeBook: async (parent, { ID }) => {
-      return await Book.findOneAndDelete({ _id: ID });
-    },
-
-    addUser: async (parent, { username, email, password, savedBooks }) => {
+    createUser: async (parent, { username, email, password, savedBooks }) => {
       return await User.create({ username, email, password, savedBooks });
     },
-   
+
+    saveBook: async (parent, { authors, description, bookId, image, link, title }) => {
+      return await User.findOneAndUpdate({_id: userId}, { $push: { savedBooks: {authors, description, bookId, image, link, title} } });
+    },
+    deleteBook: async (parent, { ID }) => {
+      return await User.findOneAndUpdate({_id: userId}, { $pull: { savedBooks: { ID } } });
+    },
   },
 };
 
