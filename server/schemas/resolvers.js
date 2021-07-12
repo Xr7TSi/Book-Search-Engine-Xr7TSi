@@ -15,7 +15,7 @@ const resolvers = {
       return await User.create({ username, email, password, savedBooks });
     },
 
-    saveBook: async (parent, { userId, authors, description, bookId, image, link, title }) => {
+    saveBook: async (parent, { authors, description, bookId, image, link, title }) => {
       return await User.findOneAndUpdate({_id: userId}, { $addToSet: { savedBooks: {authors, description, bookId, image, link, title} } });
     },    
     
