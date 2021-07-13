@@ -1,8 +1,10 @@
 import React from 'react';
 
+import { setContext } from '@apollo/client/link/context';
+
 
 import {
-  ApolloClient, ApolloProvider, InMemoryCache
+  ApolloClient, ApolloProvider, InMemoryCache, createHttpLink
 } from '@apollo/client';
 
 
@@ -10,6 +12,23 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import SearchBooks from './pages/SearchBooks';
 import SavedBooks from './pages/SavedBooks';
 import Navbar from './components/Navbar';
+
+// Construct our main GraphQL API endpoint
+const httpLink = createHttpLink({
+  uri: '/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('id_token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
 
 const client = new ApolloClient({
   request: operation => {
@@ -21,7 +40,7 @@ const client = new ApolloClient({
     });
   },
   uri: '/graphql',
-  // link: authLink.concat(httpLink),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
