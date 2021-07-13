@@ -15,12 +15,12 @@ const resolvers = {
       return await User.create({ username, email, password, savedBooks });
     },
 
-    saveBook: async (parent, { authors, description, bookId, image, link, title }) => {
-      return await User.findOneAndUpdate({_id: userId}, { $addToSet: { savedBooks: {authors, description, bookId, image, link, title} } });
+    saveBook: async (parent, { _Id, authors, description, bookId, image, link, title }) => {
+      return await User.findOneAndUpdate({_id: _Id}, { $addToSet: { savedBooks: {authors, description, bookId, image, link, title} } });
     },    
     
     deleteBook: async (parent, { ID }) => {
-      return await User.findOneAndUpdate({_id: userId}, { $pull: { savedBooks: { ID } } });
+      return await User.findOneAndDelete({_id: ID});
     },
   },
 };
