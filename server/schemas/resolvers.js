@@ -16,15 +16,15 @@ const resolvers = {
   },
 
   Mutation: {
-    createUser: async (parent, { username, email, password, savedBooks }) => {
-      return await User.create({ username, email, password, savedBooks });
+    addUser: async (parent, { username, email, bookCount, savedBooks }) => {
+      return await User.create({ username, email, bookCount, savedBooks });
     },
 
     saveBook: async (parent, { _Id, authors, description, bookId, image, link, title }) => {
       return await User.findOneAndUpdate({_id: _Id}, { $addToSet: { savedBooks: {authors, description, bookId, image, link, title} } });
     },    
     
-    deleteBook: async (parent, { ID }) => {
+    removeBook: async (parent, { ID }) => {
       return await User.findOneAndDelete({_id: ID});
     },
   },
