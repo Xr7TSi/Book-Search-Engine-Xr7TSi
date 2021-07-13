@@ -2,8 +2,13 @@ const { Book, User } = require('../models');
 
 const resolvers = {
   Query: {
-    getSingleUser: async (args) => {  
-      return await User.findOne({args});
+  
+    // By adding context to our query, we can retrieve the logged in user without specifically searching for them
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return Profile.findOne({ _id: context.user._id });
+      }
+      throw new AuthenticationError('You need to be logged in!');
     },
     getAllUsers: async () => {
       return await User.find({});
